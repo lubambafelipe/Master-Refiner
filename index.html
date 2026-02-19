@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Refiner -Reescrevendo o código da indústria</title>
+  <meta name="description" content="Master Refiner -Reescrevendo o código da indústria.">
+  <meta name="keywords" content="indústria, inovação,criação de soluções, Angola">
+  <meta name="author" content="MasterRefiner">
+  <meta property="og:title" content="Master Refiner -Reescrevendo o código da indústria">
+  <meta property="og:description" content="Transformamos ideias em resultados digitais">
+  <meta property="og:image" content="./MR.6.png">
+  <meta property="og:url" content="https://oris.com">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Animações profissionais */
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .fade-in-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .fade-in-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .fade-in-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .fade-in-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .fade-in-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .scale-in {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    .scale-in.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    /* Efeitos de cards profissionais */
+    .professional-card {
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .professional-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    .professional-card:hover::before {
+      left: 100%;
+    }
+    
+    .professional-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255,255, 0.2);
+    }
+    
+    /* Botões com gradiente profissional */
+    .gradient-btn {
+      background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      color: #fff;
+      border: 1px solid #111;
+      border-radius: 0.5rem;
+    }
+    
+    .gradient-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    .gradient-btn:hover::before {
+      left: 100%;
+    }
+    
+    .gradient-btn:hover {
+      transform: translateY(-3px);
+      box-shadow:0 10px 25px  rgba(255, 255,255, 0.2);
+    }
+    
+    .outline-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+    
+    .outline-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    .outline-btn:hover::before {
+      left: 100%;
+    }
+    
+    .outline-btn:hover {
+      color: #fff;
+      transform: translateY(-3px);
+    }
+    
+    /* Efeito de gradiente sutil no background */
+    .gradient-bg {
+      background: linear-gradient(135deg, #0b0b0b 0%, #141414 50%, #0b0b0b 100%);
+    }
+    
+    .section-gradient {
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    }
+    
+    /* Loading bar profissional */
+    .loading-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00ccff, #1d2b97, #3d76f1);
+      z-index: 9999;
+      transition: width 0.4s ease;
+      opacity: 0;
+    }
+    
+    /* Efeito de brilho sutil nos ícones */
+    .icon-glow {
+      transition: all 0.3s ease;
+    }
+    
+    .icon-glow:hover {
+      filter: drop-shadow(0 0 8px rgb(2, 116, 148));
+      transform: scale(1.1);
+    }
+    
+    /* Animação sutil para números */
+    .counter {
+      transition: all 0.6s ease;
+    }
+    
+    /* Efeito de parallax sutil */
+    .parallax-bg {
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    
+    /* Efeito de overlay gradiente */
+    .gradient-overlay {
+      background: linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(26, 26, 26, 0.6) 100%);
+    }
+    
+    /* Animação de flutuação sutil */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .float-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Efeito de borda gradiente */
+    .gradient-border {
+      position: relative;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a) padding-box,
+                  linear-gradient(135deg, #2f2f2f, #555555) border-box;
+    }
+  </style>
+</head>
+<body class="bg-black text-white">
+
+  <!-- Loading Bar -->
+  <div class="loading-bar" id="loadingBar"></div>
+
+  <!-- CABEÇALHO -->
+  <header class="fixed top-0 left-0 w-full bg-black/95 backdrop-blur-lg shadow-2xl z-50 border-b border-gray-800">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-10 py-4">
+      <div class="fade-in-left">
+        <img src="././Identidade visual/MR.6.png" alt="MasterRefiner" class="w-24 sm:w-32 md:w-38 transition-transform duration-300 hover:scale-105">
+      </div>
+
+      <!-- Menu Mobile -->
+      <div class="lg:hidden">
+        <button id="menu-toggle" class="text-white focus:outline-none transition-transform duration-300 hover:scale-110">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Menu Desktop -->
+      <nav id="main-nav" class="hidden lg:flex gap-6 xl:gap-8 font-semibold text-sm md:text-base">
+        <a href="#inicio" class="relative py-2 group">
+          <span class="text-white group-hover:text-blue-400 transition-all duration-300">PÁGINA INICIAL</span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#servicos" class="relative py-2 group">
+          <span class="text-white group-hover:text-blue-400  transition-all duration-300">NOSSOS SERVIÇOS</span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#sobre" class="relative py-2 group">
+          <span class="text-white group-hover:text-blue-400 transition-all duration-300">SOBRE NÓS</span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#contato" class="relative py-2 group">
+          <span class="text-white group-hover:text-blue-400 transition-all duration-300">CONTACTOS</span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span>
+        </a>
+      </nav>
+
+      <!-- CTA Header -->
+      <div class="hidden lg:block fade-in-right">
+        <button onclick="scrollToContato()" class="gradient-btn text-WHITE px-6 py-3 rounded-lg font-semibold">
+          <i class="fas fa-desktop mr-2"></i>Iniciar Formação
+        </button>
+      </div>
+
+      <!-- Menu Mobile Expandido -->
+      <div id="mobile-menu" class="absolute top-full left-0 w-full bg-black/98 backdrop-blur-xl z-50 shadow-2xl lg:hidden hidden border-t border-gray-800">
+        <nav class="flex flex-col p-6">
+          <a href="#inicio" class="hover:text-blue-400 transition-all duration-300 py-4 border-b border-gray-800 group">
+            <i class="fas fa-home mr-3 group-hover:scale-110 transition-transform duration-300"></i>PÁGINA INICIAL
+          </a>
+          <a href="#servicos" class="hover:text-blue-400 transition-all duration-300 py-4 border-b border-gray-800 group">
+            <i class="fas fa-cogs mr-3 group-hover:scale-110 transition-transform duration-300"></i>NOSSOS SOLUÇÔES
+          </a>
+          <a href="#sobre" class="hover:text-blue-400 transition-all duration-300 py-4 border-b border-gray-800 group">
+            <i class="fas fa-users mr-3 group-hover:scale-110 transition-transform duration-300"></i>SOBRE NÓS
+          </a>
+          <a href="#contato" class="hover:text-blue-400 transition-all duration-300 py-4 border-b border-gray-800 group">
+            <i class="fas fa-phone mr-3 group-hover:scale-110 transition-transform duration-300"></i>CONTACTOS
+          </a>
+          <button onclick="scrollToContato()" class="gradient-btn text-black px-6 py-4 rounded-lg font-semibold mt-6">
+            <i class="fas fa-desktop mr-2"></i>Iniciar Formação
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEÇÃO INÍCIO -->
+  <section id="inicio" class="min-h-screen flex items-center justify-center gradient-bg pt-16 relative overflow-hidden">
+    <div class="absolute inset-0 gradient-overlay"></div>
+    
+    <div class="relative z-10 w-full max-w-6xl mx-4 sm:mx-6 flex flex-col items-center justify-center text-center">
+      <div class="mb-8 float-animation">
+        <img src="././Identidade visual/MR.8.png" alt="Simulação" class="w-16 sm:w-20" />
+
+      </div>
+      
+      <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-blue-400 mb-8 fade-in-up">
+        Master Refiner
+      </h1>
+      
+      <div class="relative mb-8">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-20 blur-lg"></div>
+        <p class="text-2xl sm:text-3xl md:text-4xl text-gray-200 relative z-10 fade-in-up">
+          Transformamos aprendizagem industrial em <span class="text-blue-400 font-semibold">treinamentos virtual</span>
+        </p>
+      </div>
+      
+      <p class="text-lg sm:text-xl text-gray-300 mb-12 max-w-3xl leading-relaxed fade-in-up">
+        Ajudamos profissionais a ganhar experiência real em operações industriais com simulações digitais seguras e precisas. <i class="fas fa-desktop"></i>
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-6 justify-center fade-in-up">
+        <button onclick="scrollToContato()" class="gradient-btn text-black px-10 py-4 rounded-xl font-semibold text-lg">
+          <i class="fas fa-paper-plane mr-3"></i>Solicitar Formação
+        </button>
+        <button onclick="scrollToServicos()" class="outline-btn border-2 border-blue-400 text-blue-400 px-10 py-4 rounded-xl font-semibold text-lg ">
+          <i class="fas fa-search mr-3"></i>Conhecer Simuladores
+        </button>
+      </div>
+      
+      <!-- Scroll indicator -->
+      <div class="absolute bottom-8  transform -translate-x-1/2 fade-in-up mr-3">
+        <div class="animate-bounce">
+          <i class="fas fa-chevron-down text-blue-400 text-2xl"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDICADORES DE CONFIANÇA -->
+  <section class="py-20 section-gradient relative overflow-hidden">
+    <div class="max-w-7xl mx-auto text-center relative z-10">
+      <h3 class="text-3xl font-bold text-white mb-16 fade-in-up">
+        <i class="fas fa-cogs mr-4 text-blue-400 opacity-80"></i>
+
+Treinamento industrial baseado em simulações digitais
+      </h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+  
+        <div class="fade-in-up">
+          <div class="text-4xl font-bold text-blue-400 mb-2 counter" data-target="50">
+            <i class="fas fa-user-cog mr-3 text-blue-400"></i><span>0</span>+
+          </div>
+          <div class="text-gray-300 text-lg">Profissionais treinados</div>
+        </div>
+      
+        <div class="fade-in-up">
+          <div class="text-4xl font-bold text-blue-400 mb-2 counter" data-target="12">
+            <i class="fas fa-cogs mr-3 text-blue-400"></i><span>0</span>+
+          </div>
+          <div class="text-gray-300 text-lg">Módulos de simulação</div>
+        </div>
+      
+        <div class="fade-in-up">
+          <div class="text-4xl font-bold text-blue-400 mb-2 counter" data-target="30">
+            <i class="fas fa-industry mr-3 text-blue-400"></i><span>0</span>+
+          </div>
+          <div class="text-gray-300 text-lg">Cenários industriais</div>
+        </div>
+      
+        <div class="fade-in-up">
+          <div class="text-4xl font-bold text-blue-400 mb-2 counter" data-target="500">
+            <i class="fas fa-clock mr-3 text-blue-400"></i><span>0</span>+
+          </div>
+          <div class="text-gray-300 text-lg">Horas de treino prático</div>
+        </div>
+      </div>
+  </section>
+
+  <!-- SEÇÃO SERVIÇOS -->
+  <section id="servicos" class="min-h-screen flex flex-col items-center justify-center gradient-bg py-20 relative overflow-hidden">
+    <div class="max-w-7xl w-full flex flex-col items-center relative z-10">
+      <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-8 text-blue-400 text-center fade-in-up">
+        <i class="fas fa-cogs mr-6 text-blue-400"></i>Nossas Soluções
+      </h2> 
+      <p class="max-w-3xl text-center text-gray-300 mb-16 mx-auto px-4 text-lg leading-relaxed fade-in-up">
+        Desenvolvemos soluções digitais voltadas para simulação, formação técnica e visualização de processos industriais, ajudando profissionais a adquirir experiência prática em ambientes seguros e controlados.
+      </p>
+      
+
+      <!--GRID DE SERVIÇOS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+        
+        <!-- Card 1 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 text-center gradient-border fade-in-left">
+          <div class="text-5xl mb-6 text-blue-400 icon-glow">
+            <i class="fas fa-hashtag"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-blue-400 mb-4">Simulação de Processos Industriais</h3>
+          <p class="text-gray-300 text-base mb-6 leading-relaxed">
+            Desenvolvemos ambientes digitais que reproduzem processos industriais reais, permitindo treino prático, análise de falhas e tomada de decisão em condições seguras.
+          </p>
+          <ul class="text-gray-400 text-sm text-left space-y-3">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Modelação de processos industriais
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Cenários de operação e falha
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Simulação segura para treino técnico
+            </li>
+          </ul>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 text-center gradient-border fade-in-up">
+          <div class="text-5xl mb-6 text-blue-400 icon-glow">
+            <i class="fas fa-bullseye"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-blue-400 mb-4">Formação Técnica Digital</h3>
+          <p class="text-gray-300 text-base mb-6 leading-relaxed">
+            Criamos conteúdos e plataformas de treino voltadas para capacitação técnica, combinando teoria e prática através de simulações interativas.
+          </p>
+          <ul class="text-gray-400 text-sm text-left space-y-3">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Módulos de aprendizagem interativos
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Avaliação de desempenho técnico
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Treino orientado a cenários reais
+            </li>
+          </ul>
+          
+        </div>
+
+        <!-- Card 3 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 text-center gradient-border fade-in-right">
+          <div class="text-5xl mb-6 text-blue-400 icon-glow">
+            <i class="fas fa-palette"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-blue-400 mb-4">Interfaces e Painéis de Controlo</h3>
+          <p class="text-gray-300 text-base mb-6 leading-relaxed">
+            Desenvolvemos interfaces claras e funcionais para monitorização de sistemas, análise de dados e apoio à tomada de decisão em ambientes industriais.
+          </p>
+          <ul class="text-gray-400 text-sm text-left space-y-3">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Dashboards técnicos e operacionais
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Visualização de dados em tempo real
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Interfaces intuitivas e seguras
+            </li>
+          </ul>
+          
+        </div>
+
+        <!-- Card 4 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 text-center gradient-border fade-in-left">
+          <div class="text-5xl mb-6 text-white icon-glow">
+            <i class="fas fa-chalkboard-teacher text-blue-400"></i>
+          </div>
+        
+          <h3 class="text-2xl font-semibold text-blue-400 mb-4">
+            Formação Técnica com Simulações
+          </h3>
+        
+          <p class="text-gray-300 text-base mb-6 leading-relaxed">
+            Desenvolvemos soluções de formação técnica baseadas em simulações digitais para capacitação prática e tomada de decisão.
+          </p>
+        
+          <ul class="text-gray-400 text-sm text-left space-y-3">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Treino baseado em cenários reais
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Avaliação de competências técnicas
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Aprendizagem prática e segura
+            </li>
+          </ul>
+        </div>
+        
+
+        <!-- Card 5 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 text-center gradient-border fade-in-up">
+          <div class="text-5xl mb-6 text-white icon-glow">
+            <i class="fas fa-search-plus text-blue-400"></i>
+          </div>
+        
+          <h3 class="text-2xl font-semibold text-blue-400 mb-4">
+            Análise e Validação de Processos
+          </h3>
+        
+          <p class="text-gray-300 text-base mb-6 leading-relaxed">
+            Avaliamos processos industriais através de modelos digitais para identificar falhas, otimizar desempenho e reduzir riscos operacionais.
+          </p>
+        
+          <ul class="text-gray-400 text-sm text-left space-y-3">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Análise de desempenho operacional
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Validação de processos antes da execução real
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Redução de erros e custos operacionais
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Card 6 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 text-center gradient-border fade-in-right">
+          <div class="text-5xl mb-6 text-blue-400 icon-glow">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-blue-400 mb-4">
+            Consultoria Técnica Industrial
+          </h3>
+          <p class="text-gray-300 text-base mb-6 leading-relaxed">
+            Prestamos apoio técnico na tomada de decisão, utilizando simulações digitais para planeamento, análise e melhoria de sistemas industriais.
+          </p>
+          <ul class="text-gray-400 text-sm text-left space-y-3">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Apoio à tomada de decisão técnica
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Análise de cenários operacionais
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-400 mr-3"></i>Planeamento e otimização de processos
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CTA Serviços -->
+      <div class="text-center mt-16 fade-in-up">
+        <button onclick="scrollToContato()" class="gradient-btn text-black px-12 py-5 rounded-xl font-semibold text-lg">
+          <i class="fas fa-play mr-3"></i>Começar Simulação
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO SOBRE -->
+  <section id="sobre" class="min-h-screen flex flex-col items-center justify-center section-gradient py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-transparent to-black/60"></div>
+    <div class="relative z-10 max-w-7xl w-full text-center flex flex-col items-center">
+      <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-12 text-blue-400 tracking-wide fade-in-up ">
+        <i class="fas fa-users mr-6 text-blue-400"></i>Sobre a Master Refiner
+      </h2>
+      <p class="text-xl text-gray-300 mb-16 leading-relaxed max-w-4xl mx-auto px-4 fade-in-up">
+        Na <span class="text-blue-400 font-semibold">Master Refiner</span>, trabalhamos com foco na formação técnica e na melhoria
+        de sistemas industriais através de simulações digitais.  
+        O nosso objetivo é preparar profissionais para enfrentar desafios reais de forma segura, prática e eficiente.
+      </p>
+    
+      <!-- Missão | Visão | Valores -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 max-w-6xl">
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border fade-in-left">
+          <div class="text-4xl text-gray-400 mb-6 icon-glow">
+            <i class="fas fa-bullseye text-blue-400"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-blue-400 mb-4">Missão</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Capacitar profissionais e empresas através de simulações digitais aplicadas a sistemas industriais reais.
+          </p>
+        </div>
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border fade-in-up">
+          <div class="text-4xl text-blue-400 mb-6 icon-glow">
+            <i class="fas fa-eye"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-blue-400 mb-4">Visão</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Tornar-nos uma referência em formação e simulação industrial, contribuindo para operações mais seguras e eficientes.
+          </p>
+        </div>
+    
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border fade-in-right">
+          <div class="text-4xl text-gray-400 mb-6 icon-glow">
+            <i class="fas fa-gem text-blue-400"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-blue-400 mb-4">Valores</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Rigor técnico, segurança operacional, inovação contínua e compromisso com a qualidade.
+          </p>
+        </div>    
+      </div>
+    </div>
+    
+      <!-- Equipe -->
+      <h3 class="text-3xl font-bold text-blue-400 mb-12 fade-in-up">
+        <i class="fas fa-user-tie mr-4 text-blue-400"></i>Nossa Equipe
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+
+        <!-- Card 1 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border scale-in">
+          <img src="././Pessoal master Refiner/Fidel Dos Santos.jpg" 
+               alt="Fidel Casongo Dos Santos" 
+               class="w-24 h-24 mx-auto mb-6 rounded-full border-2 text-blue-400 object-cover">
+          <h3 class="text-xl font-semibold text-blue-400 mb-2">
+            <i class="fas fa-crown mr-3 text-blue-400"></i>Fidel Casongo Dos Santos
+          </h3>
+          <p class="text-blue-400 text-lg mb-4">Líder de Projeto/Coordenador Geral</p>
+          <p class="text-gray-300 leading-relaxed">
+            Responsável pela visão técnica e estratégica da Master Refiner, com foco em simulação industrial e formação profissional.Atua como supervisionador, distribuidor de tarefas e representante do grupo.
+          </p>
+        </div>
+        <!-- Card 2 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border scale-in">
+          <img src="././Pessoal master Refiner/Milton Perestrelo.jpg" 
+               alt="Milton Perestrelo" 
+               class="w-24 h-24 mx-auto mb-6 rounded-full border-2 border-blue-400 object-cover">
+          <h3 class="text-xl font-semibold text-blue-400 mb-2">
+            <i class="fas fa-cogs mr-3 text-blue-400"></i>Milton Perestrelo
+          </h3>
+          <p class="text-blue-400 text-lg mb-4">Desenvolvedor Web</p>
+          <p class="text-gray-300 leading-relaxed">
+            Atua no desenvolvimento de modelos digitais e simulações aplicadas a sistemas industriais reais.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border scale-in">
+          <img src="./Pessoal master Refiner/Eliezer Neto.jpg" 
+               alt="Eliezer Neto" 
+               class="w-24 h-24 mx-auto mb-6 rounded-full border-2 text-blue-400 object-cover">
+          <h3 class="text-xl font-semibold text-blue-400 mb-2">
+            <i class="fas fa-tasks mr-3 text-blue-400"></i>Eliezer Neto
+          </h3>
+          <p class="text-blue-400 text-lg mb-4">Responsável Técnico/Desenvolvedor Principal</p>
+          <p class="text-gray-300 leading-relaxed">
+            Lida com a parte técnica do projeto (caso envolva tecnologia, programação, design).
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border scale-in">
+          <img src="./Pessoal master Refiner/Hélder Fazona.jpg" 
+               alt="Hélder Fazona" 
+               class="w-24 h-24 mx-auto mb-6 rounded-full border-2 text-blue-400 object-cover">
+          <h3 class="text-xl font-semibold text-blue-400 mb-2">
+            <i class="fas fa-tasks mr-3 text-blue-400"></i>Hélder Fazona
+          </h3>
+          <p class="text-blue-400 text-lg mb-4">Pesquisador / Analista de Conteúdo</p>
+          <p class="text-gray-300 leading-relaxed">
+            Responsável por pesquisas, levantamento de dados e apoio conceitual.
+          </p>
+        </div>
+<!-- Card 6 -->
+<div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border scale-in">
+  <img src="./Pessoal master Refiner/Sílvio Zovo.jpg" 
+       alt="Silvio Zovo" 
+       class="w-24 h-24 mx-auto mb-6 rounded-full border-2 text-blue-400 object-cover">
+  <h3 class="text-xl font-semibold text-blue-400 mb-2">
+    <i class="fas fa-tasks mr-3 text-blue-400"></i>Silvio Zovo
+  </h3>
+  <p class="text-blue-400 text-lg mb-4">Marketing e Comunicação</p>
+  <p class="text-gray-300 leading-relaxed">
+    Cuida da identidade visual, redes sociais e divulgação.
+  </p>
+</div>
+
+<!-- Card 6 -->
+<div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border scale-in">
+  <img src="./Pessoal master Refiner/Felinto Soares.jpg" 
+       alt="Felinto Soare" 
+       class="w-24 h-24 mx-auto mb-6 rounded-full border-2 text-blue-400 object-cover">
+
+  <h3 class="text-xl font-semibold text-blue-400 mb-2">
+    <i class="fas fa-tasks mr-3 text-blue-400"></i>Felinto Soares
+  </h3>
+
+  <p class="text-blue-400 text-lg mb-4">Gestor Financeiro / Logística</p>
+
+  <p class="text-gray-300 leading-relaxed">
+    Responsável por orçamentos, controle de recursos e apoio na execução prática.
+  </p>
+</div>
+        
+        
+      
+      </div>
+
+      <!-- Frase de impacto -->
+      <p class="mt-16 text-xl italic text-gray-300 max-w-2xl mx-auto px-4 fade-in-up">
+        <i class="fas fa-quote-left text-blue-400 mr-4 text-2xl"></i>
+        Na Master Refiner, não apenas simulamos processos,  capacitamos profissionais para enfrentar desafios industriais reais com segurança e precisão.
+        <i class="fas fa-quote-right text-blue-400 ml-4 text-2xl"></i>
+      </p>
+      
+    </div>
+  </section>
+
+  <!-- SEÇÃO CONTATO -->
+  <section id="contato" class="min-h-screen flex flex-col items-center justify-center gradient-bg py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/80"></div>
+
+    <div class="relative z-10 max-w-6xl w-full text-center flex flex-col items-center">
+      <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-12 text-blue-400 tracking-wide fade-in-up">
+        <i class="fas fa-phone-alt mr-6"></i>Entre em Contato
+      </h2>
+
+      <p class="text-xl text-gray-300 mb-16 max-w-2xl mx-auto px-4 fade-in-up">
+        Tem alguma dúvida, proposta ou quer trabalhar connosco?  
+        Envie uma mensagem ou fale diretamente pelas redes abaixo.
+      </p>
+
+      <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl">
+        
+        <!-- Formulário de Contato -->
+        <div class="professional-card bg-[#1a1a1a] rounded-2xl p-10 gradient-border fade-in-left">
+          <h3 class="text-3xl font-bold text-blue-400 mb-8">
+            <i class="fas fa-envelope mr-4"></i>Envie sua Mensagem
+          </h3>
+          <form class="space-y-6" id="contact-form">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="relative">
+                <i class="fas fa-user absolute left-4 top-4 text-gray-400 text-lg"></i>
+                <input type="text" placeholder="Seu nome" class="bg-[#2a2a2a] rounded-xl p-4 pl-12 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 w-full transition-all duration-300" required>
+              </div>
+              <div class="relative">
+                <i class="fas fa-envelope absolute left-4 top-4 text-gray-400 text-lg"></i>
+                <input type="email" placeholder="Seu email" class="bg-[#2a2a2a] rounded-xl p-4 pl-12 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 w-full transition-all duration-300" required>
+              </div>
+            </div>
+            <div class="relative">
+              <i class="fas fa-tag absolute left-4 top-4 text-gray-400 text-lg"></i>
+              <input type="text" placeholder="Assunto" class="bg-[#2a2a2a] rounded-xl p-4 pl-12 text-white w-full focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300" required>
+            </div>
+            <div class="relative">
+              <i class="fas fa-comment absolute left-4 top-4 text-gray-400 text-lg"></i>
+              <textarea placeholder="Sua mensagem" rows="6" class="bg-[#2a2a2a] rounded-xl p-4 pl-12 text-white w-full focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300" required></textarea>
+            </div>
+            <button type="submit" class="gradient-btn text-black px-8 py-4 rounded-xl font-semibold text-lg w-full">
+              <i class="fas fa-paper-plane mr-3"></i>Enviar Mensagem
+            </button>
+          </form>
+        </div>
+
+        <!-- Informações de Contato -->
+        <div class="space-y-8">
+          
+          <!-- Redes Sociais -->
+          <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border fade-in-right">
+            <h3 class="text-3xl font-bold text-blue-400 mb-8">
+              <i class="fas fa-share-alt mr-4"></i>Nossas Redes
+            </h3>
+            <div class="flex justify-center gap-6 mb-8">
+              <!-- Facebook -->
+              <a href="https://facebook.com/orisangola" target="_blank" class="bg-blue-600 p-5 rounded-full icon-glow transition-all duration-300 hover:scale-110">
+                <i class="fab fa-facebook-f text-white text-2xl"></i>
+              </a>
+
+              <!-- Instagram -->
+              <a href="https://instagram.com/orisangola" target="_blank" class="bg-gradient-to-br from-purple-600 to-pink-600 p-5 rounded-full icon-glow transition-all duration-300 hover:scale-110">
+                <i class="fab fa-instagram text-white text-2xl"></i>
+              </a>
+
+              <!-- LinkedIn -->
+              <a href="https://linkedin.com/company/orisangola" target="_blank" class="bg-blue-400 p-5 rounded-full icon-glow transition-all duration-300 hover:scale-110">
+                <i class="fab fa-linkedin-in text-white text-2xl"></i>
+              </a>
+
+              <!-- WhatsApp -->
+              <a href="https://wa.me/244900000000" target="_blank" class="bg-green-500 p-5 rounded-full icon-glow transition-all duration-300 hover:scale-110">
+                <i class="fab fa-whatsapp text-white text-2xl"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Informações de Contato -->
+          <div class="professional-card bg-[#1a1a1a] rounded-2xl p-8 gradient-border fade-in-up">
+            <h3 class="text-3xl font-bold text-blue-400 mb-8">
+              <i class="fas fa-info-circle mr-4"></i>Informações
+            </h3>
+            <div class="space-y-6 text-gray-300 text-left text-lg">
+              <p class="flex items-center gap-4">
+                <i class="fas fa-map-marker-alt text-blue-400 text-xl w-6"></i>
+                Luanda, Angola
+              </p>
+              <p class="flex items-center gap-4">
+                <i class="fas fa-envelope text-blue-400 text-xl w-6"></i>
+                masterrefiner@gmail.com
+              </p>
+              <p class="flex items-center gap-4">
+                <i class="fas fa-phone text-blue-400 text-xl w-6"></i>
+                +244 936 154 073  |+244 936 154 073
+              </p>
+              <p class="flex items-center gap-4">
+                <i class="fas fa-clock text-blue-400 text-xl w-6"></i>
+                Seg - Sex: 8h00 - 18h00
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="relative z-10 mt-16 text-center text-gray-400 text-lg w-full fade-in-up">
+      <p class="mb-4">
+        <i class="fas fa-copyright mr-3"></i>
+        2025 <span class="text-blue-400 font-semibold">Master Refiner -Reescrevendo o código da indústria</span> — Todos os direitos reservados.
+      </p>
+      <p>
+        <i class="fas fa-id-card mr-3"></i>5NIF: **************
+      </p>
+    </footer>
+  </section>
+
+  <script>
+    // Menu mobile toggle
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Fechar menu ao clicar em um link
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+      });
+    });
+
+    // Fechar menu ao redimensionar a janela para desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth >= 1024) {
+        document.getElementById('mobile-menu').classList.add('hidden');
+      }
+    });
+
+    // Scroll para seções
+    function scrollToContato() {
+      document.getElementById('contato').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function scrollToServicos() {
+      document.getElementById('servicos').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Animações scroll com diferentes efeitos
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 100);
+        }
+      });
+    }, observerOptions);
+
+    // Observar todos os elementos com classes de animação
+    document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right, .scale-in').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Loading bar durante o scroll
+    window.addEventListener('scroll', function() {
+      const winHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.pageYOffset;
+      const trackLength = docHeight - winHeight;
+      const progress = Math.floor(scrollTop / trackLength * 100);
+      
+      const loadingBar = document.getElementById('loadingBar');
+      loadingBar.style.width = progress + '%';
+      loadingBar.style.opacity = progress > 0 && progress < 100 ? '1' : '0';
+    });
+
+    // Animação de contagem para números
+    function startCounters() {
+      const counters = document.querySelectorAll('.counter');
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const count = counter.querySelector('span');
+        let current = 0;
+        const increment = target / 100;
+        
+        const updateCount = () => {
+          if (current < target) {
+            current += increment;
+            count.textContent = Math.floor(current);
+            setTimeout(updateCount, 20);
+          } else {
+            count.textContent = target;
+          }
+        };
+        
+        updateCount();
+      });
+    }
+
+    // Observar quando a seção de contadores estiver visível
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          startCounters();
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    });
+
+    // Observar a seção de indicadores
+    const indicatorsSection = document.querySelector('.section-gradient');
+    if (indicatorsSection) {
+      counterObserver.observe(indicatorsSection);
+    }
+
+    // Form submission profissional
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Efeito de loading no botão
+      const button = this.querySelector('button');
+      const originalText = button.innerHTML;
+      button.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Enviando...';
+      button.disabled = true;
+      
+      setTimeout(() => {
+        // Simular envio bem-sucedido
+        const successMessage = document.createElement('div');
+        successMessage.className = 'bg-green-600 text-white p-4 rounded-xl mt-4 fade-in-up';
+        successMessage.innerHTML = '<i class="fas fa-check mr-2"></i> Mensagem enviada com sucesso! Entraremos em contacto em breve.';
+        this.parentNode.appendChild(successMessage);
+        
+        this.reset();
+        button.innerHTML = originalText;
+        button.disabled = false;
+        
+        setTimeout(() => {
+          successMessage.remove();
+        }, 5000);
+      }, 2000);
+    });
+
+    // Loading inicial
+    window.addEventListener('load', function() {
+      document.body.classList.add('loaded');
+      setTimeout(() => {
+        document.getElementById('loadingBar').style.opacity = '0';
+      }, 1000);
+    });
+
+    // Efeito de hover profissional para links do menu
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+      });
+      
+      link.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+      });
+    });
+  </script>
+
+</body>
+</html>
